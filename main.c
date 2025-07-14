@@ -12,6 +12,7 @@ int main(void) {
   }
 
   printf("window: %p", &main_window);
+  set_pixel(0, 0, 1);
 
   // keep window open unless quit is pressed
   SDL_Event e;

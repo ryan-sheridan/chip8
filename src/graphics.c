@@ -40,3 +40,39 @@ int destroy_window(SDL_Window *window) {
   SDL_Quit();
   return 0;
 }
+
+void _render_framebuffer(void) {
+  // set screen as black
+  SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+  SDL_RenderClear(renderer);
+  // set render draw colour as white
+  SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+
+  // loop through framebuffer and draw a rect * scale
+  for(int y = 0; y < 32; y++) {
+    for(int x = 0; x < 64; x++) {
+      int bit_pos = 63 - x;
+      int pixel = (fb[y] >> bit_pos) & 1;
+      // if the pixel at x and y is 1
+      if(pixel) {
+        // create an SDL_Rect * the scale, each pixel is scaled up by 12
+        // x, y, w, h
+        SDL_Rect rect = { x * SCALE, y * SCALE, SCALE, SCALE };
+        // render the rect
+        SDL_RenderFillRect(renderer, &rect);
+      }
+    }
+  }
+  SDL_RenderPresent(renderer);
+}
+
+
+void set_pixel(int x, int y, int value) {
+  int bit_pos = 63 - x;
+  if(value) {
+    fb[y] |= (1ULL << bit_pos);
+  } else {
+    fb[y] &= ~(1ULL << bit_pos);
+  }
+  _render_framebuffer();
+}
