@@ -17,6 +17,7 @@ extern uint16_t PC;
 extern uint8_t SP;
 extern uint8_t delay_timer;
 extern uint8_t sound_timer;
+extern uint16_t opcode;
 
 int load_rom(char *rom_path);
 int execute(void);
