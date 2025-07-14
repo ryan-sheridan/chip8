@@ -49,15 +49,15 @@ void _render_framebuffer(void) {
   SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
 
   // loop through framebuffer and draw a rect * scale
-  for(int y = 0; y < 32; y++) {
-    for(int x = 0; x < 64; x++) {
+  for (int y = 0; y < 32; y++) {
+    for (int x = 0; x < 64; x++) {
       int bit_pos = 63 - x;
       int pixel = (fb[y] >> bit_pos) & 1;
       // if the pixel at x and y is 1
-      if(pixel) {
+      if (pixel) {
         // create an SDL_Rect * the scale, each pixel is scaled up by 12
         // x, y, w, h
-        SDL_Rect rect = { x * SCALE, y * SCALE, SCALE, SCALE };
+        SDL_Rect rect = {x * SCALE, y * SCALE, SCALE, SCALE};
         // render the rect
         SDL_RenderFillRect(renderer, &rect);
       }
@@ -66,13 +66,19 @@ void _render_framebuffer(void) {
   SDL_RenderPresent(renderer);
 }
 
-
 void set_pixel(int x, int y, int value) {
   int bit_pos = 63 - x;
-  if(value) {
+  if (value) {
     fb[y] |= (1ULL << bit_pos);
   } else {
     fb[y] &= ~(1ULL << bit_pos);
+  }
+  _render_framebuffer();
+}
+
+void clear_framebuffer(void) {
+  for (int i = 0; i < 32; i++) {
+    fb[i] = 1;
   }
   _render_framebuffer();
 }

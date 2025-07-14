@@ -16,7 +16,7 @@ framebuffer_t fb;
 int create_window(SDL_Window **window);
 int destroy_window(SDL_Window *window);
 
-void clear_framebuffer(framebuffer_t fb);
+void clear_framebuffer(void);
 void set_pixel(int x, int y, int value);
 
 #endif
