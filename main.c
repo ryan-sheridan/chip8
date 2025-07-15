@@ -3,23 +3,17 @@
 #include "debug.h"
 #include <stdio.h>
 
-uint8_t memory[MEMORY_SIZE];
-uint8_t V[16];
-uint16_t stack[16];
-uint16_t I;
-uint16_t PC;
-uint8_t SP;
-uint8_t delay_timer;
-uint8_t sound_timer;
-uint16_t opcode;
+Chip8 *chip8;
 
 void init_chip8(void) {
-  I = 0;
-  PC = 0x200;
-  SP = 0;
-  delay_timer = 0;
-  sound_timer = 0;
-  opcode = 0;
+  chip8 = malloc(sizeof(Chip8));
+
+  chip8->I = 0;
+  chip8->PC = 0x200;
+  chip8->SP = 0;
+  chip8->delay_timer = 0;
+  chip8->sound_timer = 0;
+  chip8->opcode = 0;
 }
 
 int main(int argc, char **argv) {
@@ -33,8 +27,6 @@ int main(int argc, char **argv) {
   char *rom_path = argv[1];
   if (load_rom(rom_path) != 0)
     return 1;
-
-  // hex_dump((const void*)memory, MEMORY_SIZE);
 
   SDL_Window *main_window = NULL;
 

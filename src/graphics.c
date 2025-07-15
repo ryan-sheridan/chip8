@@ -52,7 +52,7 @@ void _render_framebuffer(void) {
   for (int y = 0; y < 32; y++) {
     for (int x = 0; x < 64; x++) {
       int bit_pos = 63 - x;
-      int pixel = (fb[y] >> bit_pos) & 1;
+      int pixel = (chip8->fb[y] >> bit_pos) & 1;
       // if the pixel at x and y is 1
       if (pixel) {
         // create an SDL_Rect * the scale, each pixel is scaled up by 12
@@ -69,16 +69,16 @@ void _render_framebuffer(void) {
 void set_pixel(int x, int y, int value) {
   int bit_pos = 63 - x;
   if (value) {
-    fb[y] |= (1ULL << bit_pos);
+    chip8->fb[y] |= (1ULL << bit_pos);
   } else {
-    fb[y] &= ~(1ULL << bit_pos);
+    chip8->fb[y] &= ~(1ULL << bit_pos);
   }
   _render_framebuffer();
 }
 
 void clear_framebuffer(void) {
   for (int i = 0; i < 32; i++) {
-    fb[i] = 1;
+    chip8->fb[i] = 1;
   }
   _render_framebuffer();
 }

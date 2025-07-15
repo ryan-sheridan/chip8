@@ -12,7 +12,7 @@ int load_rom(char *rom_path) {
   int size = ftell(fp);
   fseek(fp, 0, SEEK_SET);
 
-  fread(memory + 0x200, sizeof(uint16_t), size, fp);
+  fread(chip8->memory + 0x200, sizeof(uint16_t), size, fp);
   fclose(fp);
 
   return 0;
@@ -25,23 +25,26 @@ int execute(void) {
   // - we shift it to the left by 8 bits (0000)
   // - we grab the second byte (EO) and | it with the first byte leaving us with
   // (00EO) as a uint16_t
-  opcode = memory[PC] << 8 | memory[PC + 1];
-  printf("opcode: %04X\n", opcode);
+  chip8->opcode = chip8->memory[chip8->PC] << 8 | chip8->memory[chip8->PC + 1];
+  printf("opcode: %04X\n", chip8->opcode);
 
-  switch (opcode & 0xF000) {
+  switch (chip8->opcode & 0xF000) {
   case 0x000:
-    switch (opcode & 0x00FF) {
+    switch (chip8->opcode & 0x00FF) {
     case 0x00E0:
       // clear screen
       clear_framebuffer();
+      break;
+    case 0x00EE:
+      break;
     default:
-      printf("opcode %04X not implemented\n", opcode);
+      printf("opcode %04X not implemented\n", chip8->opcode);
     }
   default:
-    printf("opcode %04X not implemented\n", opcode);
+    printf("opcode %04X not implemented\n", chip8->opcode);
   }
 
   // yo
-  PC+=2;
+  chip8->PC += 2;
   return 0;
 }

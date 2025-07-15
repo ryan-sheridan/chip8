@@ -8,10 +8,8 @@
 #define SCALE 12
 
 #include <SDL2/SDL.h>
+#include "chip8.h"
 
-typedef uint64_t framebuffer_t[32];
-
-framebuffer_t fb;
 
 int create_window(SDL_Window **window);
 int destroy_window(SDL_Window *window);
