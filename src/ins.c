@@ -1,29 +1,51 @@
 #include "ins.h"
 #include "chip8.h"
 #include "graphics.h"
+#include "debug.h"
 
-void step(void) {
+void _step(void) {
   chip8->pc_reg+=2;
+}
+
+uint8_t _get_x(void) {
+  return (chip8->cur_opcode & 0x0F00);
+}
+
+uint8_t _get_y(void) {
+  return (chip8->cur_opcode & 0x00F0);
+}
+
+uint8_t _get_n(void) {
+  return (chip8->cur_opcode & 0x000F);
+}
+
+uint8_t _get_kk(void) {
+  return (chip8->cur_opcode & 0x00FF);
+}
+
+uint16_t _get_nnn(void) {
+  return (chip8->cur_opcode & 0x0FFF);
 }
 
 // 00E0
 void clear_scr(void) {
-  printf("cleared screen\n");
   clear_framebuffer();
-  step();
+  _step();
+  vlog("cleared screen\n");
 }
 
 // 00EE
 void return_from_subroutine(void) {
-  printf("returned from subroutine\n");
   chip8->sp_reg--;
   chip8->pc_reg = chip8->stack[chip8->sp_reg];
-  step();
+  _step();
+  vlog("returned from subroutine\n");
 }
 
 // 1000
 void jump(void) {
-  return;
+  chip8->pc_reg = _get_nnn();
+  vlog("jumped to addr, %x\n", chip8->pc_reg);
 }
 
 // 2000

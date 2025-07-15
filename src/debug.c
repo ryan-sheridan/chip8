@@ -1,14 +1,32 @@
 #include "debug.h"
 #include "chip8.h"
 
+bool verbose;
+
+void vlog(const char *format, ...) {
+  if(!verbose) return;
+  va_list args;
+  va_start(args, format);
+  vprintf(format, args);
+  va_end(args);
+}
+
+void fvlog(FILE *stream, const char *format, ...) {
+  if(!verbose) return;
+  va_list args;
+  va_start(args, format);
+  vfprintf(stream, format, args);
+  va_end(args);
+}
+
 void print_debug_info(void) {
   // TODO: print all other chip8 info, registers, memory layout, etc..
-  printf("pc: %x\nsp: %x\n", chip8->pc_reg, chip8->sp_reg);
+  vlog("pc: %x\nsp: %x\n", chip8->pc_reg, chip8->sp_reg);
 }
 
 void start_debug_shell(void) {
   // TODO: you know what bro
-  fprintf(stderr, "debug shell not yet implemented\n");
+  fvlog(stderr, "debug shell not yet implemented\n");
 }
 
 void hex_dump(const void *data, size_t size) {
@@ -17,9 +35,9 @@ void hex_dump(const void *data, size_t size) {
   ascii[16] = '\0';
   for (i = 0; i < size; ++i) {
     if (i % 2 == 0) {
-      printf("%02X", ((unsigned char *)data)[i]);
+      vlog("%02X", ((unsigned char *)data)[i]);
     } else {
-      printf("%02X ", ((unsigned char *)data)[i]);
+      vlog("%02X ", ((unsigned char *)data)[i]);
     }
 
     if (((unsigned char *)data)[i] >= ' ' &&
@@ -30,18 +48,18 @@ void hex_dump(const void *data, size_t size) {
     }
 
     if ((i + 1) % 8 == 0 || i + 1 == size) {
-      printf(" ");
+      vlog(" ");
       if ((i + 1) % 16 == 0) {
-        printf("|  %s \n", ascii);
+        vlog("|  %s \n", ascii);
       } else if (i + 1 == size) {
         ascii[(i + 1) % 16] = '\0';
         if ((i + 1) % 16 <= 8) {
-          printf(" ");
+          vlog(" ");
         }
         for (j = (i + 1) % 16; j < 16; ++j) {
-          printf("   ");
+          vlog("   ");
         }
-        printf("|  %s \n", ascii);
+        vlog("|  %s \n", ascii);
       }
     }
   }

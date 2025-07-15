@@ -17,12 +17,21 @@ void init_chip8(void) {
   chip8->paused = false;
 }
 
+bool verbose;
+
 int main(int argc, char **argv) {
   init_chip8();
 
   if (argc < 2) {
-    printf("Usage: %s <rom_path>\n", argv[0]);
+    printf("Usage: %s <rom_path> [-v verbose]\n", argv[0]);
     return 1;
+  }
+
+  if(argc > 2) {
+    if(strcmp(argv[2], "-v") == 0) {
+      verbose = true;
+      vlog("verbose mode activated, logging everything\n");
+    }
   }
 
   char *rom_path = argv[1];
