@@ -1,4 +1,15 @@
 #include "debug.h"
+#include "chip8.h"
+
+void print_debug_info(void) {
+  // TODO: print all other chip8 info, registers, memory layout, etc..
+  printf("pc: %x\nsp: %x\n", chip8->pc_reg, chip8->sp_reg);
+}
+
+void start_debug_shell(void) {
+  // TODO: you know what bro
+  fprintf(stderr, "debug shell not yet implemented\n");
+}
 
 void hex_dump(const void *data, size_t size) {
   char ascii[17];

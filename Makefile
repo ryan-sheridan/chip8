@@ -1,7 +1,7 @@
 CC = gcc
 CFLAGS = -Wall -Wextra -Iinclude -Isrc -I/opt/homebrew/include `sdl2-config --cflags`
 LDFLAGS = `sdl2-config --libs`
-OBJ_FILES = main.o src/sound.o src/graphics.o src/chip8.o src/debug.o
+OBJ_FILES = main.o src/sound.o src/graphics.o src/chip8.o src/debug.o src/ins.o
 EXEC = chip8_emulator
 
 all: $(EXEC)

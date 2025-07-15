@@ -8,12 +8,13 @@ Chip8 *chip8;
 void init_chip8(void) {
   chip8 = malloc(sizeof(Chip8));
 
-  chip8->I = 0;
-  chip8->PC = 0x200;
-  chip8->SP = 0;
+  chip8->i_reg = 0;
+  chip8->pc_reg = 0x200;
+  chip8->sp_reg = 0;
   chip8->delay_timer = 0;
   chip8->sound_timer = 0;
-  chip8->opcode = 0;
+  chip8->cur_opcode = 0;
+  chip8->paused = false;
 }
 
 int main(int argc, char **argv) {
@@ -32,7 +33,7 @@ int main(int argc, char **argv) {
 
   create_window(&main_window);
   if (!main_window) {
-    fprintf(stderr, "failed at create_window\n");
+    fprintf(stderr, "failed create_window\n");
     return 1;
   }
 
@@ -46,6 +47,11 @@ int main(int argc, char **argv) {
       }
     }
     execute();
+    if(chip8->paused) {
+      start_debug_shell();
+      return 1;
+    }
+
     SDL_Delay(16); // ~60 FPS
   }
 
