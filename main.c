@@ -4,6 +4,7 @@
 #include <stdio.h>
 
 Chip8 *chip8;
+bool verbose;
 
 void init_chip8(void) {
   chip8 = malloc(sizeof(Chip8));
@@ -17,8 +18,6 @@ void init_chip8(void) {
   chip8->paused = false;
 }
 
-bool verbose;
-
 int main(int argc, char **argv) {
   init_chip8();
 
@@ -30,7 +29,7 @@ int main(int argc, char **argv) {
   if(argc > 2) {
     if(strcmp(argv[2], "-v") == 0) {
       verbose = true;
-      vlog("verbose mode activated, logging everything\n");
+      vlog("verbose mode activated, logging everything!\n");
     }
   }
 

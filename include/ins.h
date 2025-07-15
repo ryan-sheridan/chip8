@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
+void update_current_opcode(void);
 void return_from_subroutine(void);
 void clear_scr(void);
 void jump(void);

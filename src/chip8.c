@@ -22,16 +22,9 @@ int load_rom(char *rom_path) {
 }
 
 int execute(void) {
-  // explaination of the following (imagine cur_opcode 00E0)
-  // - cur_opcodes are 16 bits (2 bytes)
-  // - we grab the first byte by using memory[PC] (00)
-  // - we shift it to the left by 8 bits (0000)
-  // - we grab the second byte (EO) and | it with the first byte leaving us with
-  // (00EO) as a uint16_t
-  chip8->cur_opcode =
-      chip8->memory[chip8->pc_reg] << 8 | chip8->memory[chip8->pc_reg + 1];
-
-  print_debug_info();
+  update_current_opcode();
+  // print_debug_info();
+  vlog_pc_opcode();
 
   switch (chip8->cur_opcode & 0xF000) {
     case 0x0000:
@@ -43,15 +36,15 @@ int execute(void) {
         case 0x00EE:
           return_from_subroutine();
           break;
-        case 0x1000:
-          break;
         default:
           printf("cur_opcode %04X not implemented\n", chip8->cur_opcode);
           start_debug_shell();
           exit(EXIT_FAILURE);
-          break;
       }
+      break;
     case 0x1000:
+      vlog("case 0x1000\n");
+      vlog_pc_opcode();
       // jump
       jump();
       break;

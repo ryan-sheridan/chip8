@@ -19,9 +19,15 @@ void fvlog(FILE *stream, const char *format, ...) {
   va_end(args);
 }
 
+void vlog_pc_opcode(void) {
+  vlog("[v] pc: %04X, cur_opcode: %04X\n", chip8->pc_reg, chip8->cur_opcode);
+}
+
 void print_debug_info(void) {
   // TODO: print all other chip8 info, registers, memory layout, etc..
-  vlog("pc: %x\nsp: %x\n", chip8->pc_reg, chip8->sp_reg);
+  vlog("----- printing debug info -----\n");
+  vlog("pc: %04X\nsp: %02X\n", chip8->pc_reg, chip8->sp_reg);
+  vlog("------- debug info end --------\n");
 }
 
 void start_debug_shell(void) {

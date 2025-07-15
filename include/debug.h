@@ -12,5 +12,6 @@ void print_debug_info(void);
 void start_debug_shell(void);
 void vlog(const char *format, ...);
 void fvlog(FILE *stream, const char *format, ...);
+void vlog_pc_opcode(void);
 
 #endif
