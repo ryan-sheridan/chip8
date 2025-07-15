@@ -43,8 +43,6 @@ int execute(void) {
       }
       break;
     case 0x1000:
-      vlog("case 0x1000\n");
-      vlog_pc_opcode();
       // jump
       jump();
       break;
@@ -71,6 +69,14 @@ int execute(void) {
     case 0x7000:
       // add vx and imm and store in vx
       add_vx_imm();
+      break;
+    case 0xA000:
+      // load nnn into i
+      ld_i_addr();
+      break;
+    case 0xD000:
+      // draws sprite at vx vy, with a width of 8 pixels and a height of N pixels
+      drw_vx_vy_n();
       break;
     default:
       printf("cur_opcode %04X not implemented\n", chip8->cur_opcode);

@@ -8,6 +8,9 @@
 #define STACK_SIZE 16
 #define NUM_V_REGISTERS 16
 
+#define TRUE 1
+#define FALSE 0
+
 #include <stdlib.h>
 #include <stdio.h>
 #include "stdbool.h"

@@ -1,6 +1,8 @@
 #include "graphics.h"
 #include <SDL2/SDL.h>
 #include <stdlib.h>
+#include <unistd.h>
+#include "debug.h"
 
 static SDL_Renderer *renderer;
 
@@ -59,6 +61,7 @@ void _render_framebuffer(void) {
         // x, y, w, h
         SDL_Rect rect = {x * SCALE, y * SCALE, SCALE, SCALE};
         // render the rect
+//         vlog("drawing pixel at x:%d, y:%d\n", x, y);
         SDL_RenderFillRect(renderer, &rect);
       }
     }
@@ -74,6 +77,11 @@ void set_pixel(int x, int y, int value) {
     chip8->fb[y] &= ~(1ULL << bit_pos);
   }
   _render_framebuffer();
+}
+
+uint8_t get_pixel(int x, int y) {
+  int bit_pos = 63 - x;
+  return (chip8->fb[y] >> bit_pos) & 1;
 }
 
 void clear_framebuffer(void) {
