@@ -16,6 +16,7 @@ void init_chip8(void) {
   chip8->sound_timer = 0;
   chip8->cur_opcode = 0;
   chip8->paused = false;
+  chip8->draw_flag = false;
 }
 
 int main(int argc, char **argv) {

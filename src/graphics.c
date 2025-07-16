@@ -43,7 +43,7 @@ int destroy_window(SDL_Window *window) {
   return 0;
 }
 
-void _render_framebuffer(void) {
+void render_framebuffer(void) {
   // set screen as black
   SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
   SDL_RenderClear(renderer);
@@ -76,7 +76,6 @@ void set_pixel(int x, int y, int value) {
   } else {
     chip8->fb[y] &= ~(1ULL << bit_pos);
   }
-  _render_framebuffer();
 }
 
 uint8_t get_pixel(int x, int y) {
@@ -88,5 +87,5 @@ void clear_framebuffer(void) {
   for (int i = 0; i < 32; i++) {
     chip8->fb[i] = 1;
   }
-  _render_framebuffer();
+  render_framebuffer();
 }

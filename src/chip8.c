@@ -84,5 +84,10 @@ int execute(void) {
       break;
   }
 
+  if(chip8->draw_flag) {
+    render_framebuffer();
+    chip8->draw_flag = false;
+  }
+
   return 0;
 }

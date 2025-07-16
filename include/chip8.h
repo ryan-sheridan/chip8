@@ -33,6 +33,7 @@ typedef struct {
   framebuffer_t fb;
 
   bool paused;
+  bool draw_flag;
 } Chip8;
 
 extern Chip8 *chip8;

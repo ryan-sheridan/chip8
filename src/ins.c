@@ -112,9 +112,6 @@ void drw_vx_vy_n(void) {
       }
     }
   }
+  chip8->draw_flag = true;
   _step();
-  printf("Sprite data at I=0x%03X: %02X %02X %02X %02X %02X\n", chip8->i_reg,
-         chip8->memory[chip8->i_reg], chip8->memory[chip8->i_reg + 1],
-         chip8->memory[chip8->i_reg + 2], chip8->memory[chip8->i_reg + 3],
-         chip8->memory[chip8->i_reg + 4]);
 }
