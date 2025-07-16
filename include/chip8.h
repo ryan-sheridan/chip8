@@ -7,6 +7,8 @@
 #define PROGRAM_START 0x200
 #define STACK_SIZE 16
 #define NUM_V_REGISTERS 16
+#define NUM_KEYS 16
+#define TIMER_MAX 255
 
 #define TRUE 1
 #define FALSE 0
@@ -32,8 +34,11 @@ typedef struct {
   uint16_t cur_opcode;
   framebuffer_t fb;
 
+  uint8_t keyboard[NUM_KEYS];
+
   bool paused;
   bool draw_flag;
+  bool is_key_pressed;
 } Chip8;
 
 extern Chip8 *chip8;

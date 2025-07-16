@@ -115,7 +115,7 @@ int execute(void) {
     case 0xE000:
       switch(chip8->cur_opcode & 0x00FF) {
         case 0x009E:
-          skp(chip8);
+          // skp(chip8);
           break;
         case 0x00A1:
           // sknp(chip8);

@@ -1,6 +1,7 @@
 #include "graphics.h"
-#include "include/chip8.h"
+#include "chip8.h"
 #include "debug.h"
+#include "input.h"
 #include <stdio.h>
 
 Chip8 *chip8;
