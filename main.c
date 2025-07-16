@@ -24,6 +24,11 @@ void init_chip8(void) {
     chip8->keyboard[i] = false;
   }
   chip8->was_key_pressed = false;
+
+  // fonts
+  for(int i=0; i<FONTSET_SIZE;i++) {
+    chip8->memory[i] = FONTSET[i];
+  }
 }
 
 int main(int argc, char **argv) {

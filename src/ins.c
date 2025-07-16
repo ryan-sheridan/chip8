@@ -330,3 +330,11 @@ void ld_i_vx(void) {
 
   _step();
 }
+
+// 9XY0
+void sne_vx_vy(void) {
+  if(chip8->V[_get_x()] != chip8->V[_get_y()]) {
+    chip8->pc_reg+=2;
+  }
+  _step();
+}

@@ -84,7 +84,7 @@ uint8_t get_pixel(int x, int y) {
 
 void clear_framebuffer(void) {
   for (int i = 0; i < 32; i++) {
-    chip8->fb[i] = 1;
+    chip8->fb[i] = 0;
   }
   render_framebuffer();
 }

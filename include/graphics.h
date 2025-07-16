@@ -3,7 +3,7 @@
 
 // more things
 
-#define SCREEN_WIDTH 630
+#define SCREEN_WIDTH 640
 #define SCREEN_HEIGHT 320
 #define SCALE 10
 

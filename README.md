@@ -2,5 +2,5 @@
 
 a barebones chip8 emulator written in c.
 
-![ibm splash screenshot](screenshots/ibm_splash.png)
+![space invaders gif](screenshots/space_invaders.gif)
 

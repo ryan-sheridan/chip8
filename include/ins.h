@@ -38,5 +38,6 @@ void jmp_vo_addr(void);
 void subn_vx_vy(void);
 void shl(void);
 void ld_i_vx(void);
+void sne_vx_vy(void);
 
 #endif

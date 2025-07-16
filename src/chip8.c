@@ -104,6 +104,9 @@ int execute(void) {
           exit(EXIT_FAILURE);
       }
       break;
+    case 0x9000:
+      sne_vx_vy();
+      break;
     case 0xA000:
       // load nnn into i
       ld_i_addr();
