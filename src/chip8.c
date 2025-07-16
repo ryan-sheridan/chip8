@@ -129,10 +129,12 @@ int execute(void) {
     case 0xF000:
       switch(chip8->cur_opcode & 0x0FF) {
         case 0x0007:
+          ld_vx_dt();
           break;
         case 0x000A:
           break;
         case 0x0015:
+          ld_dt_vx();
           break;
         case 0x0018:
           break;

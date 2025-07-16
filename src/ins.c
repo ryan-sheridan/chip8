@@ -197,3 +197,15 @@ void ld_vx_i(void) {
   chip8->i_reg += (_get_x() + 1);
   _step();
 }
+
+// FX15
+void ld_dt_vx(void) {
+  chip8->delay_timer = _get_x();
+  _step();
+}
+
+// FX07
+void ld_vx_dt(void) {
+  chip8->V[_get_x()] = chip8->delay_timer;
+  _step();
+}

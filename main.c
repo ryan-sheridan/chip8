@@ -82,7 +82,11 @@ int main(int argc, char **argv) {
       return 1;
     }
 
-    //    SDL_Delay(16); // ~60 FPS
+    if(!chip8->delay_timer) {
+      SDL_Delay(1);
+    } else {
+      SDL_Delay(chip8->delay_timer); // ~60 FPS
+    }
   }
 
   destroy_window(main_window);
