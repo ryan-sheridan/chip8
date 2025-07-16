@@ -79,14 +79,19 @@ int execute(void) {
           or_vx_vy();
           break;
         case 0x0002:
+          and_vx_vy();
           break;
         case 0x0003:
+          xor_vx_vy();
           break;
         case 0x0004:
+          add_vx_vy();
           break;
         case 0x0005:
+          sub_vx_vy();
           break;
         case 0x0006:
+          shr_vx_vy();
           break;
         case 0x0007:
           break;
@@ -137,6 +142,7 @@ int execute(void) {
           ld_dt_vx();
           break;
         case 0x0018:
+          ld_st_vx();
           break;
         case 0x001E:
           add_i_vx();

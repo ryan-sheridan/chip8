@@ -27,5 +27,11 @@ void sknp_vx(void);
 void ld_vx_i(void);
 void ld_dt_vx(void);
 void ld_vx_dt(void);
+void and_vx_vy(void);
+void shr_vx_vy(void);
+void sub_vx_vy(void);
+void xor_vx_vy(void);
+void ld_st_vx(void);
+void add_vx_vy(void);
 
 #endif

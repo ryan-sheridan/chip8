@@ -10,13 +10,9 @@ void _step(void) {
 }
 
 uint8_t _get_x(void) { return (chip8->cur_opcode & 0x0F00) >> 8; }
-
 uint8_t _get_y(void) { return (chip8->cur_opcode & 0x00F0) >> 4; }
-
 uint8_t _get_n(void) { return (chip8->cur_opcode & 0x000F); }
-
 uint8_t _get_kk(void) { return (chip8->cur_opcode & 0x00FF); }
-
 uint16_t _get_nnn(void) { return (chip8->cur_opcode & 0x0FFF); }
 
 void update_current_opcode(void) {
@@ -207,5 +203,79 @@ void ld_dt_vx(void) {
 // FX07
 void ld_vx_dt(void) {
   chip8->V[_get_x()] = chip8->delay_timer;
+  _step();
+}
+
+// 8XY2
+void and_vx_vy(void) {
+  chip8->V[_get_x()] = chip8->V[_get_x()] & chip8->V[_get_y()];
+  _step();
+}
+
+
+// 8XY6
+void shr_vx_vy(void) {
+  // check if lsb is 1
+  if(chip8->V[_get_x()] % 2 == 1) {
+    // vf reg set to 1 else 0
+    chip8->V[0xF] = 1;
+  } else {
+    chip8->V[0xF] = 0;
+  }
+  chip8->V[_get_x()] = chip8->V[_get_x()] >> 1;
+  _step();
+}
+
+// 8XY5
+void sub_vx_vy(void) {
+  if(chip8->V[_get_x()] > chip8->V[_get_y()]) {
+    chip8->V[0xF] = 1;
+  } else {
+    chip8->V[0xF] = 0;
+  }
+  chip8->V[_get_x()] -= chip8->V[_get_y()];
+  _step();
+}
+
+// 8XY3
+void xor_vx_vy(void) {
+  chip8->V[_get_x()] ^= chip8->V[_get_y()];
+  _step();
+}
+
+// FX18
+void ld_st_vx(void) {
+  chip8->sound_timer = chip8->V[_get_x()];
+  _step();
+}
+
+// FX0A
+void ld_vx_k(void) {
+  chip8->was_key_pressed = false;
+
+  for(int i=0;i<NUM_KEYS;i++) {
+    if(chip8->keyboard[i] != FALSE) {
+      chip8->V[_get_x()] = i;
+      chip8->was_key_pressed = true;
+    }
+  }
+
+  if(chip8->was_key_pressed) {
+    return;
+  }
+
+  _step();
+}
+
+// 8XY4
+void add_vx_vy(void) {
+  uint16_t sum = (chip8->V[_get_y()] + chip8->V[_get_y()]);
+  if(sum > 255) {
+    chip8->V[0xF] = 1;
+  } else {
+    chip8->V[0xF] = 0;
+  }
+
+  chip8->V[_get_x()] = (sum & 0xFF);
   _step();
 }

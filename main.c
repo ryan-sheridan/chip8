@@ -85,7 +85,7 @@ int main(int argc, char **argv) {
     if(!chip8->delay_timer) {
       SDL_Delay(1);
     } else {
-      SDL_Delay(chip8->delay_timer); // ~60 FPS
+      SDL_Delay(chip8->delay_timer / 2);
     }
   }
 
