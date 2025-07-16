@@ -22,5 +22,8 @@ void rnd_vx_imm(void);
 void add_i_vx(void);
 void ld_vx_vy(void);
 void or_vx_vy(void);
+void skp_vx(void);
+void sknp_vx(void);
+void ld_vx_i(void);
 
 #endif

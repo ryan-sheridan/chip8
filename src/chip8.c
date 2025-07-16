@@ -115,10 +115,10 @@ int execute(void) {
     case 0xE000:
       switch(chip8->cur_opcode & 0x00FF) {
         case 0x009E:
-          // skp(chip8);
+          skp_vx();
           break;
         case 0x00A1:
-          // sknp(chip8);
+          sknp_vx();
           break;
         default:
           vlog("E000 sub-opcode %04X not implemented\n", chip8->cur_opcode);
@@ -146,6 +146,7 @@ int execute(void) {
         case 0x0055:
           break;
         case 0x0065:
+          ld_vx_i();
           break;
         default:
           vlog("F000 sub-opcode %04X not implemented\n", chip8->cur_opcode);

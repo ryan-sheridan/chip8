@@ -18,6 +18,11 @@ void init_chip8(void) {
   chip8->cur_opcode = 0;
   chip8->paused = false;
   chip8->draw_flag = false;
+
+  for(int i=0;i<NUM_KEYS;i++) {
+    chip8->keyboard[i] = false;
+  }
+  chip8->was_key_pressed = false;
 }
 
 int main(int argc, char **argv) {
@@ -57,8 +62,16 @@ int main(int argc, char **argv) {
   int quit = 0;
   while (!quit) {
     while (SDL_PollEvent(&e)) {
-      if (e.type == SDL_QUIT) {
-        quit = 1;
+      switch(e.type) {
+        case SDL_QUIT:
+          quit = 1;
+          break;
+        case SDL_KEYDOWN:
+          handle_key_press(e.key.keysym.sym);
+          break;
+        case SDL_KEYUP:
+          handle_key_up(e.key.keysym.sym);
+          break;
       }
     }
 

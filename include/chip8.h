@@ -38,7 +38,7 @@ typedef struct {
 
   bool paused;
   bool draw_flag;
-  bool is_key_pressed;
+  bool was_key_pressed;
 } Chip8;
 
 extern Chip8 *chip8;

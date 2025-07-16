@@ -5,6 +5,8 @@
 #include "chip8.h"
 #include <SDL2/SDL.h>
 
-void handle_input(void);
+void handle_key_press(uint32_t key);
+void handle_key_up(uint32_t key);
+
 
 #endif

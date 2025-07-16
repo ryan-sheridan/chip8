@@ -163,3 +163,37 @@ void or_vx_vy(void) {
   _step();
 }
 
+// EX9E
+void skp_vx(void) {
+  printf("key to press: %x\n", chip8->keyboard[_get_x()]);
+  if(chip8->keyboard[_get_x()]) {
+    printf("skipped because pressed\n");
+    chip8->was_key_pressed = false;
+    chip8->keyboard[_get_x()] = 0;
+    chip8->pc_reg += 4;
+  } else {
+    _step();
+  }
+}
+
+// EXA1
+void sknp_vx(void) {
+  printf("key to press: %x\n", chip8->keyboard[_get_x()]);
+  if(!chip8->keyboard[_get_x()]) {
+    printf("skipped because not pressed\n");
+    chip8->pc_reg += 4;
+  } else {
+    _step();
+  }
+}
+
+// FX65
+void ld_vx_i(void) {
+  for(int i=0;i<=_get_x();i++) {
+    chip8->V[i] = chip8->memory[chip8->i_reg + i];
+  }
+
+  // doing this because someone elses code has it
+  chip8->i_reg += (_get_x() + 1);
+  _step();
+}
