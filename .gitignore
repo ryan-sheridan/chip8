@@ -2,3 +2,4 @@ chip8_emulator
 *.o
 src/*.o
 build.sh
+*.ch8
