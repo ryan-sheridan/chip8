@@ -11,7 +11,7 @@ int create_window(SDL_Window **window) {
     printf("could not init sdl %s\n", SDL_GetError());
     return 1;
   } else {
-    printf("sdl audio and video init success\n");
+    printf("sdl video init success\n");
   }
 
   *window =

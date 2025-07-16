@@ -2,6 +2,7 @@
 #include "debug.h"
 #include "graphics.h"
 #include "input.h"
+#include "sound.h"
 #include <stdio.h>
 
 Chip8 *chip8;
@@ -27,6 +28,7 @@ void init_chip8(void) {
 
 int main(int argc, char **argv) {
   init_chip8();
+  sound_init();
 
   if (argc < 2) {
     printf("Usage: %s <rom_path> [-v verbose]\n", argv[0]);
@@ -80,8 +82,13 @@ int main(int argc, char **argv) {
       if (chip8->delay_timer > 0)
         chip8->delay_timer--;
 
-      if (chip8->sound_timer > 0)
+      if (chip8->sound_timer > 0) {
         chip8->sound_timer--;
+        if(chip8->sound_timer == 0) {
+          SDL_CreateThread(beep_thread, "BeepThread", NULL);
+        }
+      }
+
 
       last_timer_tick = now;
     }
