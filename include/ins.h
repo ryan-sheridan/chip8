@@ -18,5 +18,9 @@ void add_vx_imm(void);
 
 void ld_i_addr(void);
 void drw_vx_vy_n(void);
+void rnd_vx_imm(void);
+void add_i_vx(void);
+void ld_vx_vy(void);
+void or_vx_vy(void);
 
 #endif

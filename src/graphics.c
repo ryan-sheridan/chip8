@@ -61,7 +61,6 @@ void render_framebuffer(void) {
         // x, y, w, h
         SDL_Rect rect = {x * SCALE, y * SCALE, SCALE, SCALE};
         // render the rect
-//         vlog("drawing pixel at x:%d, y:%d\n", x, y);
         SDL_RenderFillRect(renderer, &rect);
       }
     }

@@ -33,6 +33,7 @@ void update_current_opcode(void) {
 // 00E0
 void clear_scr(void) {
   clear_framebuffer();
+  chip8->draw_flag = true;
   _step();
   vlog("[0] cleared screen\n");
 }
@@ -52,16 +53,38 @@ void jump(void) {
 }
 
 // 2000
-void call_subroutine(void) { return; }
+void call_subroutine(void) {
+  chip8->stack[chip8->sp_reg] = chip8->pc_reg;
+  chip8->sp_reg++;
+  chip8->pc_reg = _get_nnn();
+}
 
 // 3000
-void se_vx_kk(void) { return; }
+void se_vx_kk(void) {
+  if(chip8->V[_get_x()] == _get_kk()) {
+    chip8->pc_reg += 4;
+  } else {
+    chip8->pc_reg += 2;
+  }
+}
 
 // 4000
-void sne_vx_kk(void) { return; }
+void sne_vx_kk(void) {
+  if(chip8->V[_get_x()] != _get_kk()) {
+    chip8->pc_reg += 4;
+  } else {
+    chip8->pc_reg += 2;
+  }
+}
 
 // 5000
-void se_vx_vy(void) { return; }
+void se_vx_vy(void) {
+  if(chip8->V[_get_x()] == chip8->V[_get_y()]) {
+    chip8->pc_reg += 4;
+  } else {
+    chip8->pc_reg += 2;
+  }
+}
 
 // 6XKK
 void ld_vx_imm(void) {
@@ -107,11 +130,36 @@ void drw_vx_vy_n(void) {
         if (uh == 1) {
           chip8->V[0xF] = TRUE;
         }
-        vlog("x: %d, y: %d\n", pixel_x, pixel_y);
         set_pixel(pixel_x, pixel_y, uh ^= 1);
       }
     }
   }
-  chip8->draw_flag = true;
   _step();
 }
+
+// CXKK
+void rnd_vx_imm(void) {
+  srand ((unsigned int) time (NULL));
+  chip8->V[_get_x()] = rand() & _get_kk();
+  vlog("[*] rand and %x\n", chip8->V[_get_x()]);
+  _step();
+}
+
+// FX1E
+void add_i_vx(void) {
+  chip8->i_reg = chip8->i_reg + chip8->V[_get_x()];
+  _step();
+}
+
+// 8000
+void ld_vx_vy(void) {
+  chip8->V[_get_x()] = chip8->V[_get_y()];
+  _step();
+}
+
+// 8001
+void or_vx_vy(void) {
+  chip8->V[_get_x()] = chip8->V[_get_y()] | chip8->V[_get_x()];
+  _step();
+}
+

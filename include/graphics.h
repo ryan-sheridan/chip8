@@ -3,9 +3,9 @@
 
 // more things
 
-#define SCREEN_WIDTH 728
-#define SCREEN_HEIGHT 364
-#define SCALE 12
+#define SCREEN_WIDTH 630
+#define SCREEN_HEIGHT 320
+#define SCALE 10
 
 #include <SDL2/SDL.h>
 #include "chip8.h"

@@ -3,6 +3,12 @@
 
 bool verbose;
 
+long long get_time_us(void) {
+  struct timeval tv;
+  gettimeofday(&tv, NULL);
+  return tv.tv_sec * 1000000LL + tv.tv_usec;
+}
+
 void vlog(const char *format, ...) {
   if(!verbose) return;
   va_list args;

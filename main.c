@@ -46,6 +46,11 @@ int main(int argc, char **argv) {
     return 1;
   }
 
+  int *w = malloc(sizeof(int));
+  int *h = malloc(sizeof(int));
+  SDL_GetWindowSize(main_window, w, h);
+  printf("window size: w:%d, h:%d\n", *w, *h);
+
   // keep window open unless quit is pressed
   SDL_Event e;
   int quit = 0;
@@ -55,13 +60,15 @@ int main(int argc, char **argv) {
         quit = 1;
       }
     }
+
     execute();
+
     if(chip8->paused) {
       start_debug_shell();
       return 1;
     }
 
-    SDL_Delay(16); // ~60 FPS
+    //    SDL_Delay(16); // ~60 FPS
   }
 
   destroy_window(main_window);
