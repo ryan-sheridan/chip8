@@ -10,6 +10,11 @@
 #define NUM_KEYS 16
 #define TIMER_MAX 255
 
+#define CPU_HZ 700
+#define TIMER_HZ 60
+#define MS_PER_CYCLE (1000 / CPU_HZ)
+#define MS_PER_TIMER_TICK (1000 / TIMER_HZ)
+
 #define TRUE 1
 #define FALSE 0
 

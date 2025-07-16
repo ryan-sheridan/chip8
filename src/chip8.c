@@ -94,8 +94,10 @@ int execute(void) {
           shr_vx_vy();
           break;
         case 0x0007:
+          subn_vx_vy();
           break;
         case 0x000E:
+          shl();
           break;
         default:
           vlog("8000 sub-opcode %04X not implemented\n", chip8->cur_opcode);
@@ -107,7 +109,7 @@ int execute(void) {
       ld_i_addr();
       break;
     case 0xB000:
-      // TODO:
+      jmp_vo_addr();
       break;
     case 0xC000:
       rnd_vx_imm();
@@ -137,6 +139,7 @@ int execute(void) {
           ld_vx_dt();
           break;
         case 0x000A:
+          ld_vx_k();
           break;
         case 0x0015:
           ld_dt_vx();
@@ -148,10 +151,13 @@ int execute(void) {
           add_i_vx();
           break;
         case 0x0029:
+          ld_f_vx();
           break;
         case 0x0033:
+          ld_b_vx();
           break;
         case 0x0055:
+          ld_i_vx();
           break;
         case 0x0065:
           ld_vx_i();

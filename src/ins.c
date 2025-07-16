@@ -46,6 +46,7 @@ void return_from_subroutine(void) {
 void jump(void) {
   chip8->pc_reg = _get_nnn();
   vlog("[->] jumped to addr, %04X\n", chip8->pc_reg);
+  update_current_opcode();
 }
 
 // 2000
@@ -57,28 +58,31 @@ void call_subroutine(void) {
 
 // 3000
 void se_vx_kk(void) {
-  if(chip8->V[_get_x()] == _get_kk()) {
+  if (chip8->V[_get_x()] == _get_kk()) {
     chip8->pc_reg += 4;
+    update_current_opcode();
   } else {
-    chip8->pc_reg += 2;
+    _step();
   }
 }
 
 // 4000
 void sne_vx_kk(void) {
-  if(chip8->V[_get_x()] != _get_kk()) {
+  if (chip8->V[_get_x()] != _get_kk()) {
     chip8->pc_reg += 4;
+    update_current_opcode();
   } else {
-    chip8->pc_reg += 2;
+    _step();
   }
 }
 
 // 5000
 void se_vx_vy(void) {
-  if(chip8->V[_get_x()] == chip8->V[_get_y()]) {
+  if (chip8->V[_get_x()] == chip8->V[_get_y()]) {
     chip8->pc_reg += 4;
+    update_current_opcode();
   } else {
-    chip8->pc_reg += 2;
+    _step();
   }
 }
 
@@ -135,7 +139,7 @@ void drw_vx_vy_n(void) {
 
 // CXKK
 void rnd_vx_imm(void) {
-  srand ((unsigned int) time (NULL));
+  srand((unsigned int)time(NULL));
   chip8->V[_get_x()] = rand() & _get_kk();
   vlog("[*] rand and %x\n", chip8->V[_get_x()]);
   _step();
@@ -161,12 +165,10 @@ void or_vx_vy(void) {
 
 // EX9E
 void skp_vx(void) {
-  printf("key to press: %x\n", chip8->keyboard[_get_x()]);
-  if(chip8->keyboard[_get_x()]) {
-    printf("skipped because pressed\n");
-    chip8->was_key_pressed = false;
-    chip8->keyboard[_get_x()] = 0;
+  uint8_t vx_val = chip8->V[_get_x()];
+  if (chip8->keyboard[vx_val] != FALSE) {
     chip8->pc_reg += 4;
+    update_current_opcode();
   } else {
     _step();
   }
@@ -174,9 +176,7 @@ void skp_vx(void) {
 
 // EXA1
 void sknp_vx(void) {
-  printf("key to press: %x\n", chip8->keyboard[_get_x()]);
-  if(!chip8->keyboard[_get_x()]) {
-    printf("skipped because not pressed\n");
+  if (!chip8->keyboard[_get_x()]) {
     chip8->pc_reg += 4;
   } else {
     _step();
@@ -185,7 +185,7 @@ void sknp_vx(void) {
 
 // FX65
 void ld_vx_i(void) {
-  for(int i=0;i<=_get_x();i++) {
+  for (int i = 0; i <= _get_x(); i++) {
     chip8->V[i] = chip8->memory[chip8->i_reg + i];
   }
 
@@ -196,7 +196,7 @@ void ld_vx_i(void) {
 
 // FX15
 void ld_dt_vx(void) {
-  chip8->delay_timer = _get_x();
+  chip8->delay_timer = chip8->V[_get_x()];
   _step();
 }
 
@@ -212,11 +212,10 @@ void and_vx_vy(void) {
   _step();
 }
 
-
 // 8XY6
 void shr_vx_vy(void) {
   // check if lsb is 1
-  if(chip8->V[_get_x()] % 2 == 1) {
+  if (chip8->V[_get_x()] % 2 == 1) {
     // vf reg set to 1 else 0
     chip8->V[0xF] = 1;
   } else {
@@ -228,7 +227,7 @@ void shr_vx_vy(void) {
 
 // 8XY5
 void sub_vx_vy(void) {
-  if(chip8->V[_get_x()] > chip8->V[_get_y()]) {
+  if (chip8->V[_get_x()] > chip8->V[_get_y()]) {
     chip8->V[0xF] = 1;
   } else {
     chip8->V[0xF] = 0;
@@ -253,29 +252,81 @@ void ld_st_vx(void) {
 void ld_vx_k(void) {
   chip8->was_key_pressed = false;
 
-  for(int i=0;i<NUM_KEYS;i++) {
-    if(chip8->keyboard[i] != FALSE) {
+  for (int i = 0; i < NUM_KEYS; i++) {
+    if (chip8->keyboard[i] != FALSE) {
       chip8->V[_get_x()] = i;
       chip8->was_key_pressed = true;
     }
   }
 
-  if(chip8->was_key_pressed) {
-    return;
+  if (chip8->was_key_pressed) {
+    _step();
   }
-
-  _step();
 }
 
 // 8XY4
 void add_vx_vy(void) {
-  uint16_t sum = (chip8->V[_get_y()] + chip8->V[_get_y()]);
-  if(sum > 255) {
+  uint16_t sum = (chip8->V[_get_x()] + chip8->V[_get_y()]);
+  if (sum > 255) {
     chip8->V[0xF] = 1;
   } else {
     chip8->V[0xF] = 0;
   }
 
   chip8->V[_get_x()] = (sum & 0xFF);
+  _step();
+}
+
+// FX33
+void ld_b_vx(void) {
+  chip8->memory[chip8->i_reg] = chip8->V[_get_x()] / 100;
+  chip8->memory[chip8->i_reg + 1] = (chip8->V[_get_x()] / 10) % 10;
+  chip8->memory[chip8->i_reg + 2] = (chip8->V[_get_x()] % 100) % 10;
+  _step();
+}
+
+// FX29
+void ld_f_vx(void) {
+  chip8->i_reg = (chip8->V[_get_x()] * 0x5);
+  _step();
+}
+
+// BNNN
+void jmp_vo_addr(void) {
+  chip8->pc_reg = _get_nnn() + chip8->V[0];
+  update_current_opcode();
+}
+
+// 8XY7
+void subn_vx_vy(void) {
+  if (chip8->V[_get_y()] > chip8->V[_get_x()]) {
+    chip8->V[0xF] = 1;
+  } else {
+    chip8->V[0xF] = 0;
+  }
+  chip8->V[_get_x()] = chip8->V[_get_y()] - chip8->V[_get_x()];
+  _step();
+}
+
+// 8XYE
+void shl(void) {
+  if ((chip8->V[_get_x()] & 0x80) != 0) {
+    chip8->V[0xF] = 1;
+  } else {
+    chip8->V[0xF] = 0;
+  }
+
+  chip8->V[_get_x()] = chip8->V[_get_x()] << 1;
+  _step();
+}
+
+// FX55
+void ld_i_vx(void) {
+  for (int i = 0; i <= _get_x(); i++) {
+    chip8->memory[chip8->i_reg + i] = chip8->V[i];
+  }
+
+  chip8->i_reg += (_get_x() + 1);
+
   _step();
 }

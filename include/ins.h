@@ -1,13 +1,12 @@
 #ifndef INS_H
 #define INS_H
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
 
 void update_current_opcode(void);
-void return_from_subroutine(void);
 void clear_scr(void);
+void return_from_subroutine(void);
 void jump(void);
 void call_subroutine(void);
 void se_vx_kk(void);
@@ -15,7 +14,6 @@ void sne_vx_kk(void);
 void se_vx_vy(void);
 void ld_vx_imm(void);
 void add_vx_imm(void);
-
 void ld_i_addr(void);
 void drw_vx_vy_n(void);
 void rnd_vx_imm(void);
@@ -32,6 +30,13 @@ void shr_vx_vy(void);
 void sub_vx_vy(void);
 void xor_vx_vy(void);
 void ld_st_vx(void);
+void ld_vx_k(void);
 void add_vx_vy(void);
+void ld_b_vx(void);
+void ld_f_vx(void);
+void jmp_vo_addr(void);
+void subn_vx_vy(void);
+void shl(void);
+void ld_i_vx(void);
 
 #endif
